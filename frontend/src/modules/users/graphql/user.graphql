@@ -1,0 +1,6 @@
+# Possible that this will grow.
+
+type User {
+  id: ID!
+  email: String!
+}

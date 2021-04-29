@@ -1,0 +1,7 @@
+# import PartialUser from './partialUser.graphql'
+
+query Me {
+  me {
+    ...PartialUser
+  }
+}

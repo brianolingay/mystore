@@ -1,0 +1,7 @@
+mutation UserLogout {
+  userLogout {
+    authenticatable {
+      id
+    }
+  }
+}

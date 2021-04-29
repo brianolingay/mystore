@@ -1,0 +1,4 @@
+fragment PartialUser on User {
+  id
+  email
+}
