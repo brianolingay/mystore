@@ -17,13 +17,11 @@ import {
 } from "@chakra-ui/react";
 import { FormikProps, useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as yup from "yup";
 import { useUserLoginMutation } from "../../generated/graphql";
-import { getCredentials, setCredentials } from "../../lib/credentials";
-import Container from "../../shared/components/Container";
-import useUser from "../../shared/hooks/useUser";
-import Loading from "../../ui/Loading";
+import { setCredentials } from "../../lib/credentials";
+import UnAuthContainer from "./UnAuthContainer";
 
 interface InitialValues {
   email: string;
@@ -37,9 +35,7 @@ interface AlertState {
 
 const LoginPage = () => {
   const router = useRouter();
-  // const client = useApolloClient();
   const [userLogin] = useUserLoginMutation();
-  const { me, loading } = useUser({ redirectTo: "/" });
   const [alert, setAlert] = useState<AlertState | null>(null);
 
   const validationSchema = yup.object().shape({
@@ -74,92 +70,88 @@ const LoginPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (me) {
-      router.replace("/");
-    }
-  }, [me]);
-
-  if (loading) return <Loading />;
-
-  if (me) return null;
-
   return (
-    <Flex
-      minH="100vh"
-      direction="column"
-      align="center"
-      justify="center"
-      bg="gray.50"
-    >
-      <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
-        <Box
-          w={[300, 400, 500]}
-          rounded="lg"
-          bg="white"
-          boxShadow="lg"
-          p={[4, 6, 8]}
-        >
-          <Box overflow="hidden">
-            <Heading as="h3" size="lg" mb="15px">
-              Login
-            </Heading>
-            <Divider />
-            <Box mt="15px">
-              {alert && (
-                <Alert status={alert.status}>
-                  <AlertIcon />
-                  {alert.title && <AlertTitle mr={2}>{alert.title}</AlertTitle>}
-                  <CloseButton
-                    position="absolute"
-                    right="8px"
-                    top="8px"
-                    onClick={() => setAlert(null)}
-                  />
-                </Alert>
-              )}
-              <form onSubmit={formik.handleSubmit}>
-                <FormControl
-                  isInvalid={
-                    (formik.errors.email && formik.touched.email) as boolean
-                  }
-                >
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}
-                  />
-                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  mt={6}
-                  isInvalid={
-                    (formik.errors.password &&
-                      formik.touched.password) as boolean
-                  }
-                >
-                  <FormLabel htmlFor="password">password</FormLabel>
-                  <Input
-                    type="password"
-                    id="password"
-                    name="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                  />
-                  <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-                </FormControl>
-                <Stack direction="row" spacing={4} align="center" mt={6}>
-                  <Button
-                    colorScheme="green"
-                    isLoading={formik.isSubmitting}
-                    type="submit"
+    <UnAuthContainer>
+      <Flex
+        minH="100vh"
+        direction="column"
+        align="center"
+        justify="center"
+        bg="gray.50"
+      >
+        <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
+          <Box
+            w={[300, 400, 500]}
+            rounded="lg"
+            bg="white"
+            boxShadow="lg"
+            p={[4, 6, 8]}
+          >
+            <Box overflow="hidden">
+              <Heading as="h3" size="lg" mb="15px">
+                Login
+              </Heading>
+              <Divider />
+              <Box mt="15px">
+                {alert && (
+                  <Alert status={alert.status}>
+                    <AlertIcon />
+                    {alert.title && (
+                      <AlertTitle mr={2}>{alert.title}</AlertTitle>
+                    )}
+                    <CloseButton
+                      position="absolute"
+                      right="8px"
+                      top="8px"
+                      onClick={() => setAlert(null)}
+                    />
+                  </Alert>
+                )}
+                <form onSubmit={formik.handleSubmit}>
+                  <FormControl
+                    isInvalid={
+                      (formik.errors.email && formik.touched.email) as boolean
+                    }
                   >
-                    Submit
-                  </Button>
-                  {/* <Spacer />
+                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <Input
+                      type="email"
+                      id="email"
+                      name="email"
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                    />
+                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                  </FormControl>
+                  <FormControl
+                    mt={6}
+                    isInvalid={
+                      (formik.errors.password &&
+                        formik.touched.password) as boolean
+                    }
+                  >
+                    <FormLabel htmlFor="password">password</FormLabel>
+                    <Input
+                      type="password"
+                      id="password"
+                      name="password"
+                      onChange={formik.handleChange}
+                      value={formik.values.password}
+                    />
+                    <FormErrorMessage>
+                      {formik.errors.password}
+                    </FormErrorMessage>
+                  </FormControl>
+                  <Stack direction="row" spacing={4} align="center" mt={6}>
+                    <Button
+                      colorScheme="green"
+                      isLoading={formik.isSubmitting}
+                      type="submit"
+                      w="100%"
+                    >
+                      Submit
+                    </Button>
+                    {/* <Spacer />
                     <Button
                       colorScheme="blue"
                       variant="link"
@@ -169,13 +161,14 @@ const LoginPage = () => {
                     >
                       Reset Password
                     </Button> */}
-                </Stack>
-              </form>
+                  </Stack>
+                </form>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </Stack>
-    </Flex>
+        </Stack>
+      </Flex>
+    </UnAuthContainer>
   );
 };
 

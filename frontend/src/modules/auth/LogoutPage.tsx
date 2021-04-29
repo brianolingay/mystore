@@ -13,14 +13,11 @@ const LogoutPage = () => {
 
   useEffect(() => {
     userLogout().then(() => {
+      removeCredentials();
       client.resetStore().then(() => {
         router.replace("/");
       });
     });
-
-    return () => {
-      removeCredentials();
-    };
   }, [userLogout, router, client]);
 
   return (
