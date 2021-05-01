@@ -97,7 +97,7 @@ rails s -p 3001
 4. ruby-rubocop - for ruby
 
 ## For Review
-1 Authentication(Login, Registration, Logout)
+1. Authentication(Login, Registration, Logout)
 2. Profile (Account Info. Change Password)
 
 ## TODO
