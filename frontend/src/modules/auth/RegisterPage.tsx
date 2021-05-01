@@ -1,25 +1,21 @@
-import { useApolloClient } from "@apollo/client";
+import { Alert } from "@chakra-ui/alert";
+import { Box, Divider, Flex, Heading, Stack } from "@chakra-ui/layout";
 import {
-  Alert,
   AlertIcon,
   AlertTitle,
-  Box,
-  Button,
   CloseButton,
-  Divider,
-  Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
-  Heading,
   Input,
-  Stack,
+  FormErrorMessage,
+  Button,
+  Spacer,
 } from "@chakra-ui/react";
 import { FormikProps, useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import * as yup from "yup";
-import { useUserLoginMutation } from "../../generated/graphql";
+import { useUserSignUpMutation } from "../../generated/graphql";
 import { setCredentials } from "../../lib/credentials";
 import { AlertState } from "./type";
 import UnAuthContainer from "./UnAuthContainer";
@@ -27,11 +23,12 @@ import UnAuthContainer from "./UnAuthContainer";
 interface InitialValues {
   email: string;
   password: string;
+  passwordConfirmation: string;
 }
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const router = useRouter();
-  const [userLogin] = useUserLoginMutation();
+  const [userSignUp] = useUserSignUpMutation();
   const [alert, setAlert] = useState<AlertState | null>(null);
 
   const validationSchema = yup.object().shape({
@@ -39,20 +36,30 @@ const LoginPage = () => {
       .string()
       .email("Email address is invalid")
       .required("Email address is required"),
-    password: yup.string().required("Password is required"),
+    password: yup
+      .string()
+      .min(3, "Password must be at least 3 characters")
+      .max(64)
+      .required("Password is required"),
+    passwordConfirmation: yup
+      .string()
+      .min(3, "Password must be at least 3 characters")
+      .max(64)
+      .required("Confirm Password is required")
+      .oneOf([yup.ref("password")], "Passwords do not match"),
   });
 
   const formik: FormikProps<InitialValues> = useFormik<InitialValues>({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: "", password: "", passwordConfirmation: "" },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const { data } = await userLogin({
+        const { data } = await userSignUp({
           variables: values,
         });
 
-        if (data?.userLogin) {
-          setCredentials(data.userLogin.credentials!);
+        if (data?.userSignUp) {
+          setCredentials(data.userSignUp.credentials!);
 
           router.replace("/");
         }
@@ -85,7 +92,7 @@ const LoginPage = () => {
           >
             <Box overflow="hidden">
               <Heading as="h3" size="lg" mb="15px">
-                Login
+                Register
               </Heading>
               <Divider />
               <Box mt="15px">
@@ -138,25 +145,45 @@ const LoginPage = () => {
                       {formik.errors.password}
                     </FormErrorMessage>
                   </FormControl>
+                  <FormControl
+                    mt={6}
+                    isInvalid={
+                      (formik.errors.passwordConfirmation &&
+                        formik.touched.passwordConfirmation) as boolean
+                    }
+                  >
+                    <FormLabel htmlFor="passwordConfirmation">
+                      Confirm Password
+                    </FormLabel>
+                    <Input
+                      type="password"
+                      id="passwordConfirmation"
+                      name="passwordConfirmation"
+                      onChange={formik.handleChange}
+                      value={formik.values.passwordConfirmation}
+                    />
+                    <FormErrorMessage>
+                      {formik.errors.passwordConfirmation}
+                    </FormErrorMessage>
+                  </FormControl>
                   <Stack direction="row" spacing={4} align="center" mt={6}>
                     <Button
                       colorScheme="green"
                       isLoading={formik.isSubmitting}
                       type="submit"
-                      w="100%"
                     >
                       Submit
                     </Button>
-                    {/* <Spacer />
+                    <Spacer />
                     <Button
                       colorScheme="blue"
                       variant="link"
                       onClick={() => {
-                        router.push("/reset-password");
+                        router.push("/login");
                       }}
                     >
-                      Reset Password
-                    </Button> */}
+                      Login
+                    </Button>
                   </Stack>
                 </form>
               </Box>
@@ -168,4 +195,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

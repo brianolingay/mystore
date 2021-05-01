@@ -171,6 +171,11 @@ export type UserUpdatePasswordWithTokenPayload = {
   credentials?: Maybe<Credential>;
 };
 
+export type CredentialPropsFragment = (
+  { __typename?: 'Credential' }
+  & Pick<Credential, 'accessToken' | 'client' | 'expiry' | 'tokenType' | 'uid'>
+);
+
 export type UserLoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -183,7 +188,7 @@ export type UserLoginMutation = (
     { __typename?: 'UserLoginPayload' }
     & { credentials: (
       { __typename?: 'Credential' }
-      & Pick<Credential, 'accessToken' | 'client' | 'expiry' | 'tokenType' | 'uid'>
+      & CredentialPropsFragment
     ) }
   )> }
 );
@@ -218,6 +223,33 @@ export type PartialUserFragment = (
   & Pick<User, 'id' | 'email'>
 );
 
+export type UserSignUpMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
+}>;
+
+
+export type UserSignUpMutation = (
+  { __typename?: 'Mutation' }
+  & { userSignUp?: Maybe<(
+    { __typename?: 'UserSignUpPayload' }
+    & { credentials?: Maybe<(
+      { __typename?: 'Credential' }
+      & CredentialPropsFragment
+    )> }
+  )> }
+);
+
+export const CredentialPropsFragmentDoc = gql`
+    fragment CredentialProps on Credential {
+  accessToken
+  client
+  expiry
+  tokenType
+  uid
+}
+    `;
 export const PartialUserFragmentDoc = gql`
     fragment PartialUser on User {
   id
@@ -228,15 +260,11 @@ export const UserLoginDocument = gql`
     mutation UserLogin($email: String!, $password: String!) {
   userLogin(email: $email, password: $password) {
     credentials {
-      accessToken
-      client
-      expiry
-      tokenType
-      uid
+      ...CredentialProps
     }
   }
 }
-    `;
+    ${CredentialPropsFragmentDoc}`;
 export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, UserLoginMutationVariables>;
 
 /**
@@ -332,3 +360,40 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UserSignUpDocument = gql`
+    mutation UserSignUp($email: String!, $password: String!, $passwordConfirmation: String!) {
+  userSignUp(email: $email, password: $password, passwordConfirmation: $passwordConfirmation) {
+    credentials {
+      ...CredentialProps
+    }
+  }
+}
+    ${CredentialPropsFragmentDoc}`;
+export type UserSignUpMutationFn = Apollo.MutationFunction<UserSignUpMutation, UserSignUpMutationVariables>;
+
+/**
+ * __useUserSignUpMutation__
+ *
+ * To run a mutation, you first call `useUserSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSignUpMutation, { data, loading, error }] = useUserSignUpMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      passwordConfirmation: // value for 'passwordConfirmation'
+ *   },
+ * });
+ */
+export function useUserSignUpMutation(baseOptions?: Apollo.MutationHookOptions<UserSignUpMutation, UserSignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserSignUpMutation, UserSignUpMutationVariables>(UserSignUpDocument, options);
+      }
+export type UserSignUpMutationHookResult = ReturnType<typeof useUserSignUpMutation>;
+export type UserSignUpMutationResult = Apollo.MutationResult<UserSignUpMutation>;
+export type UserSignUpMutationOptions = Apollo.BaseMutationOptions<UserSignUpMutation, UserSignUpMutationVariables>;

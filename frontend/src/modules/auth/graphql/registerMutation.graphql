@@ -1,0 +1,17 @@
+# import CredentialProps from './credentialProps.graphql'
+
+mutation UserSignUp(
+  $email: String!
+  $password: String!
+  $passwordConfirmation: String!
+) {
+  userSignUp(
+    email: $email
+    password: $password
+    passwordConfirmation: $passwordConfirmation
+  ) {
+    credentials {
+      ...CredentialProps
+    }
+  }
+}

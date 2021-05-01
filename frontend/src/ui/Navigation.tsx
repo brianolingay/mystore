@@ -76,7 +76,10 @@ const Navigation = () => {
           {me ? (
             <MenuItem label="Logout" href="/logout" />
           ) : (
-            <MenuItem label="Login" href="/login" />
+            <>
+              <MenuItem label="Login" href="/login" />
+              <MenuItem label="Register" href="/register" />
+            </>
           )}
         </Stack>
       </Flex>

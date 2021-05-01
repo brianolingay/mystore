@@ -1,6 +1,13 @@
 # Possible that this will grow.
 
 type User {
+  createdAt: ISO8601DateTime!
+  email: String
   id: ID!
-  email: String!
+  image: String
+  name: String
+  nickname: String
+  provider: String!
+  uid: String!
+  updatedAt: ISO8601DateTime!
 }
