@@ -89,7 +89,7 @@ rails s -p 3001
 
 
 ## VSCODE Extensions
-> if you have this extensions it will be you code will be much clearner and for sure it will be validated by eslint or tslint
+> if you have this extensions it will help you code to be much clearner and to make sure to follow the best practices.
 
 1. eslint
 2. tslint
