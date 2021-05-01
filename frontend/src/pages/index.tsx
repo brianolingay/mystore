@@ -1,12 +1,12 @@
-import Container from "../shared/components/Container";
+import Layout from "../shared/components/Layout";
 import useUser from "../shared/hooks/useUser";
 
 const Index = () => {
   const { me } = useUser({});
   return (
-    <Container>
+    <Layout>
       <h1>Welcome to MyStore {me && <strong>{me.email}</strong>}</h1>
-    </Container>
+    </Layout>
   );
 };
 

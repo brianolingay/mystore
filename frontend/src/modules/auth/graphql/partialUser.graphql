@@ -1,4 +1,7 @@
 fragment PartialUser on User {
   id
   email
+  name
+  nickname
+  image
 }

@@ -1,0 +1,6 @@
+mutation UpdateCurrentUserInfo($input: UpdateCurrentUserInfoInput!) {
+  updateCurrentUserInfo(input: $input) {
+    success
+    errors
+  }
+}

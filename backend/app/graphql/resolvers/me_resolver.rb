@@ -3,9 +3,7 @@ module Resolvers
     type Types::UserType, null: false
 
     def resolve
-      user = context[:current_resource]
-
-      { id: user.id, email: user.email }
+      context[:current_resource]
     end
   end
 end

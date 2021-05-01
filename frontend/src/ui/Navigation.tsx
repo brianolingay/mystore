@@ -74,7 +74,10 @@ const Navigation = () => {
           spacing={6}
         >
           {me ? (
-            <MenuItem label="Logout" href="/logout" />
+            <>
+              <MenuItem label="Profile" href="/profile" />
+              <MenuItem label="Logout" href="/logout" />
+            </>
           ) : (
             <>
               <MenuItem label="Login" href="/login" />

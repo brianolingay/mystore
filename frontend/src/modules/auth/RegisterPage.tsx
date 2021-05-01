@@ -17,7 +17,7 @@ import { useState } from "react";
 import * as yup from "yup";
 import { useUserSignUpMutation } from "../../generated/graphql";
 import { setCredentials } from "../../lib/credentials";
-import { AlertState } from "./type";
+import { AlertState } from "../../shared/types/formTypes";
 import UnAuthContainer from "./UnAuthContainer";
 
 interface InitialValues {
@@ -133,7 +133,7 @@ const RegisterPage = () => {
                         formik.touched.password) as boolean
                     }
                   >
-                    <FormLabel htmlFor="password">password</FormLabel>
+                    <FormLabel htmlFor="password">Password</FormLabel>
                     <Input
                       type="password"
                       id="password"

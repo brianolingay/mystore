@@ -6,6 +6,6 @@ module Types
 
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
-    field :me, resolver: Resolvers::MeResolver
+    field :me, resolver: Resolvers::MeResolver, authenticate: true
   end
 end

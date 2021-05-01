@@ -1,6 +1,6 @@
 import Router from "next/router";
 import { useEffect } from "react";
-import { useMeQuery } from "../../generated/graphql";
+import { MeQuery, useMeQuery } from "../../generated/graphql";
 
 const useUser = ({ redirectTo = "", redirectIfFound = false }) => {
   const { data, loading, refetch } = useMeQuery({ pollInterval: 50000 });
