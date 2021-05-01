@@ -1,8 +1,7 @@
 {
-  "name": "with-typescript-graphql",
+  "name": "mystore/frontend",
   "version": "0.1.0",
-  "author": "",
-  "license": "MIT",
+  "author": "Brian Olingay",
   "scripts": {
     "codegen": "graphql-codegen --config codegen.yml",
     "dev": "yarn codegen && next -p 3333",

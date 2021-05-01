@@ -6,11 +6,11 @@
 
 I did follow a lot of tutorial specially on rails part and graphql side of things, then next will do testing with rspec and react testing library.
 
-> Please do critic this work in all of its part, point me to what I can improve more.
+> Please do critic this work in all of its part, and point me to what I can improve more.
 
 ## Frontend ([Next JS](https://nextjs.org/))
 
-> I been using this ever since 2018 and never came back to CRA(create react app).
+> I've been using this ever since 2018 and never came back to CRA(create react app) maybe **Because I'm not confident with regards to routing/webpack configuration.**.
 
 ### Run by using the following commands
 
