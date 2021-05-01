@@ -5,6 +5,7 @@ import React, { useMemo, useState } from "react";
 import Layout from "../../shared/components/Layout";
 import useUser from "../../shared/hooks/useUser";
 import PanelComponent from "../../ui/PanelComponent";
+import AuthContainer from "../auth/AuthContainer";
 import AccountInfo from "./AccountInfo";
 import ChangePasswordForm from "./ChangePasswordForm";
 import { HandleToastMessage } from "./types";
@@ -35,29 +36,31 @@ const ProfilePage = () => {
   );
 
   return (
-    <Layout>
-      <Stack spacing="4">
-        <PanelComponent
-          heading="Account Info"
-          hasActionButton={!editing}
-          onEdit={() => setEditing(true)}
-        >
-          {!editing ? (
-            <AccountInfo me={me} />
-          ) : (
-            <AccountInfoForm
-              initialValues={userInfo}
-              handleToastMessage={handleToastMessage}
-              setEditing={setEditing}
-              refetch={refetch}
-            />
-          )}
-        </PanelComponent>
-        <PanelComponent heading="Change Password">
-          <ChangePasswordForm handleToastMessage={handleToastMessage} />
-        </PanelComponent>
-      </Stack>
-    </Layout>
+    <AuthContainer>
+      <Layout>
+        <Stack spacing="4">
+          <PanelComponent
+            heading="Account Info"
+            hasActionButton={!editing}
+            onEdit={() => setEditing(true)}
+          >
+            {!editing ? (
+              <AccountInfo me={me} />
+            ) : (
+              <AccountInfoForm
+                initialValues={userInfo}
+                handleToastMessage={handleToastMessage}
+                setEditing={setEditing}
+                refetch={refetch}
+              />
+            )}
+          </PanelComponent>
+          <PanelComponent heading="Change Password">
+            <ChangePasswordForm handleToastMessage={handleToastMessage} />
+          </PanelComponent>
+        </Stack>
+      </Layout>
+    </AuthContainer>
   );
 };
 

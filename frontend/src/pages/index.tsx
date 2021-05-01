@@ -5,7 +5,7 @@ const Index = () => {
   const { me } = useUser({});
   return (
     <Layout>
-      <h1>Welcome to MyStore {me && <strong>{me.email}</strong>}</h1>
+      <h1>Welcome to MyStore {me && <strong>{me.name || me.email}</strong>}</h1>
     </Layout>
   );
 };

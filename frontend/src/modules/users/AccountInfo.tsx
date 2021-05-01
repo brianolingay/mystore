@@ -2,16 +2,7 @@ import { List, ListItem, ListIcon, Text, Skeleton } from "@chakra-ui/react";
 import React from "react";
 import { MdPermIdentity, MdEmail } from "react-icons/md";
 import { User } from "../../generated/graphql";
-
-interface AccountInfoProps {
-  me:
-    | ({
-        __typename?: "User" | undefined;
-      } & {
-        __typename?: "User" | undefined;
-      } & Pick<User, "id" | "email" | "name" | "nickname" | "image">)
-    | undefined;
-}
+import { AccountInfoProps } from "../../shared/types/myTypes";
 
 const AccountInfo: React.FC<AccountInfoProps> = ({ me }) => {
   return (

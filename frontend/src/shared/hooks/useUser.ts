@@ -1,10 +1,10 @@
 import Router from "next/router";
-import { useEffect } from "react";
-import { MeQuery, useMeQuery } from "../../generated/graphql";
+import { useEffect, useMemo } from "react";
+import { useMeQuery } from "../../generated/graphql";
 
 const useUser = ({ redirectTo = "", redirectIfFound = false }) => {
   const { data, loading, refetch } = useMeQuery({ pollInterval: 50000 });
-  const me = data?.me;
+  const me = useMemo(() => data?.me, [data]);
 
   useEffect(() => {
     // if no redirect needed, just return (example: already on /dashboard)

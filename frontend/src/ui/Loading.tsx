@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/layout";
 
-const Loading = () => (
+const Loading = ({ message = "Loading..." }) => (
   <Flex
     minH="100vh"
     direction="column"
@@ -16,7 +16,7 @@ const Loading = () => (
       p={[4, 6, 8]}
       justify="center"
     >
-      Loading...
+      {message}
     </Box>
   </Flex>
 );

@@ -5,10 +5,10 @@ import {
   Stack,
   Link,
   useColorModeValue,
-  useBreakpointValue,
 } from "@chakra-ui/react";
-
-import useUser from "../shared/hooks/useUser";
+import NextLink from "next/link";
+import { AccountInfoProps } from "../shared/types/myTypes";
+import LogoutButton from "./LogoutButton";
 
 interface MenuItemProps {
   label: string;
@@ -27,33 +27,28 @@ const MenuItem: React.FC<MenuItemProps> = ({ label, href }) => (
         textDecoration: "none",
         color: useColorModeValue("gray.800", "white"),
       }}
+      as={NextLink}
     >
       {label}
     </Link>
   </Box>
 );
 
-const Navigation = () => {
-  const { me } = useUser({});
+const Navigation: React.FC<AccountInfoProps> = ({ me }) => {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
-        color={useColorModeValue("gray.600", "white")}
+        color="gray.600"
         minH="60px"
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle="solid"
-        borderColor={useColorModeValue("gray.200", "gray.900")}
+        borderColor="gray.200"
         align="center"
       >
         <Flex flex={{ base: 1 }} justify="start">
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily="heading"
-            color={useColorModeValue("gray.800", "white")}
-          >
+          <Text textAlign="left" fontFamily="heading" color="gray.800">
             Logo
           </Text>
 
@@ -70,13 +65,14 @@ const Navigation = () => {
         <Stack
           flex={{ base: 1, md: 0 }}
           justify="flex-end"
+          alignItems="center"
           direction="row"
           spacing={6}
         >
           {me ? (
             <>
               <MenuItem label="Profile" href="/profile" />
-              <MenuItem label="Logout" href="/logout" />
+              <LogoutButton />
             </>
           ) : (
             <>

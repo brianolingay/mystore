@@ -31,6 +31,7 @@ interface InitialValues {
 
 const LoginPage = () => {
   const router = useRouter();
+  const client = useApolloClient();
   const [userLogin] = useUserLoginMutation();
   const [alert, setAlert] = useState<AlertState | null>(null);
 
@@ -47,6 +48,7 @@ const LoginPage = () => {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        await client.clearStore();
         const { data } = await userLogin({
           variables: values,
         });
@@ -54,7 +56,7 @@ const LoginPage = () => {
         if (data?.userLogin) {
           setCredentials(data.userLogin.credentials!);
 
-          router.replace("/");
+          setTimeout(() => router.replace("/"), 100);
         }
       } catch (error) {
         setAlert({
